@@ -1,3 +1,3 @@
-[submodule "src/typed_template"]
-	path = src/typed_template
+[submodule "pyges/typed_template"]
+	path = pyges/typed_template
 	url = https://github.com/ArielAlon24/typed-template.git

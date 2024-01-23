@@ -1,3 +1,6 @@
+from .typed_template import Template
+
+
 class SiteGenerator:
     def __init__(self) -> None:
         pass
