@@ -1,4 +1,28 @@
-from pyges.html import HtmlNode, Tag, Div, P, H, String, Span
+from pyges.nodes import Div, P, H, String, Span, Html, Br
+
+
+def test_string() -> None:
+    s1 = String("This is a test")
+    s2 = String("")
+
+    assert str(s1) == "This is a test"
+    assert str(s2) == ""
+
+
+def test_html() -> None:
+    h = Html(Div([P(String("This is a text")), Br(), P(String("Second line"))]))
+
+    assert (
+        str(h)
+        == """<!DOCTYPE html>
+<html>
+    <div>
+        <p> This is a text </p>
+        <br/>
+        <p> Second line </p>
+    </div>
+</html>"""
+    )
 
 
 def test_simple() -> None:

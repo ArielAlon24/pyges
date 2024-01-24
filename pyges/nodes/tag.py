@@ -1,30 +1,36 @@
 from typing import List
 
-from .html_node import HtmlNode
+from .node import Node, Value
 from .string import String
 
 
-class Tag(HtmlNode):
+class Tag(Node):
     def __init__(
         self,
-        value: HtmlNode | List[HtmlNode] | None = None,
+        value: Value = None,
         _class: str | None = None,
         _id: str | None = None,
         _style: str | None = None,
-        __self_closing: bool = False,
+        _self_closing: bool = False,
     ) -> None:
-        self.tags: List[HtmlNode]
+        self.nodes: List[Node] = []
         if not value:
-            self.tags = []
-        elif isinstance(value, HtmlNode):
-            self.tags = [value]
+            pass
+        elif isinstance(value, Node):
+            self.nodes.append(value)
+        elif isinstance(value, str):
+            self.nodes.append(String(value))
         else:
-            self.tags = value
+            for node in value:
+                if isinstance(node, str):
+                    self.nodes.append(String(node))
+                else:
+                    self.nodes.append(node)
 
         self._class = _class
         self._id = _id
         self._style = _style
-        self.__self_closing = __self_closing
+        self.__self_closing = _self_closing
 
     def _name(self) -> str:
         return self.__class__.__name__.lower()
@@ -50,18 +56,16 @@ class Tag(HtmlNode):
         indent = " " * indent_size
 
         if self.__self_closing:
-            return f"{indent * _rank}<{name} {attributes}/>"
+            return f"{indent * _rank}<{name}{attributes}/>"
 
-        length = len(self.tags)
+        length = len(self.nodes)
 
         if not length:
             return f"{indent * _rank}<{name}{attributes}></{name}>"
-        elif length == 1 and isinstance(self.tags[0], String):
-            return (
-                f"{indent * _rank}<{name}{attributes}> {self.tags[0]._dump()} </{name}>"
-            )
+        elif length == 1 and isinstance(self.nodes[0], String):
+            return f"{indent * _rank}<{name}{attributes}> {self.nodes[0]._dump()} </{name}>"
         else:
             inner = "\n".join(
-                tag._dump(indent_size, _rank=_rank + 1) for tag in self.tags
+                tag._dump(indent_size, _rank=_rank + 1) for tag in self.nodes
             )
             return f"{indent * _rank}<{name}{attributes}>\n{inner}\n{indent * _rank}</{name}>"

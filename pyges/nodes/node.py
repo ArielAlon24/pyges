@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
+from typing import List, Union
 
 
-class HtmlNode(ABC):
+class Node(ABC):
     @abstractmethod
     def __init__(self) -> None:
         raise NotImplementedError
@@ -12,3 +13,6 @@ class HtmlNode(ABC):
 
     def __str__(self) -> str:
         return self._dump()
+
+
+Value = Node | List[Union[Node, str]] | str | None
