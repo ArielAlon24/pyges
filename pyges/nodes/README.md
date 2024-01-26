@@ -11,17 +11,17 @@ All currently implemented nodes.
 - [x] h
 - [x] p
 - [x] span
-- [x] br/
+- [x] br
 - [x] b
 - [x] i
 - [x] strong
 - [x] em
 - [x] mark
 - [x] small
-- [ ] del
-- [ ] ins
-- [ ] sub
-- [ ] sup
+- [x] del
+- [x] ins
+- [x] sub
+- [x] sup
 
 ## Lists
 

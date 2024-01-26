@@ -1,17 +1,18 @@
-from typing import List
+from typing import List, Dict, Union
 
 from .node import Node, Value
 from .string import String
+from .attributes import Attribute
 
 
 class Tag(Node):
+    __slots__ = ("nodes", "attributes")
+    __is_void__ = False
+
     def __init__(
         self,
-        value: Value = None,
-        _class: str | None = None,
-        _id: str | None = None,
-        _style: str | None = None,
-        _self_closing: bool = False,
+        value: Node | List[Union[Node, str]] | str | None = None,
+        attributes: Dict[Attribute, str] | None = None,
     ) -> None:
         self.nodes: List[Node] = []
         if not value:
@@ -27,45 +28,37 @@ class Tag(Node):
                 else:
                     self.nodes.append(node)
 
-        self._class = _class
-        self._id = _id
-        self._style = _style
-        self.__self_closing = _self_closing
+        if not attributes:
+            self.attributes = {}
+        else:
+            self.attributes = attributes
 
-    def _name(self) -> str:
+    @property
+    def name(self) -> str:
         return self.__class__.__name__.lower()
 
-    def _attributes(self) -> List[str]:
-        attributes = []
+    def _format_attributes(self) -> str:
+        result = ""
+        for attribute, value in self.attributes.items():
+            result += f' {attribute.value}="{value}"'
 
-        if self._class:
-            attributes.append(f'class="{self._class}"')
+        return result
 
-        if self._id:
-            attributes.append(f'id="{self._id}"')
-
-        if self._style:
-            attributes.append(f'style="{self._style}"')
-
-        return attributes
-
-    def _dump(self, indent_size: int = 4, _rank: int = 0) -> str:
-        name = self._name()
-        _attributes = " ".join(self._attributes())
-        attributes = f" {_attributes}" if _attributes else ""
+    def dump(self, indent_size: int = 4, _rank: int = 0) -> str:
+        attributes = self._format_attributes()
         indent = " " * indent_size
 
-        if self.__self_closing:
-            return f"{indent * _rank}<{name}{attributes}/>"
+        if self.__is_void__:
+            return f"{indent * _rank}<{self.name}{attributes}>"
 
         length = len(self.nodes)
 
         if not length:
-            return f"{indent * _rank}<{name}{attributes}></{name}>"
+            return f"{indent * _rank}<{self.name}{attributes}></{self.name}>"
         elif length == 1 and isinstance(self.nodes[0], String):
-            return f"{indent * _rank}<{name}{attributes}> {self.nodes[0]._dump()} </{name}>"
+            return f"{indent * _rank}<{self.name}{attributes}> {self.nodes[0].dump()} </{self.name}>"
         else:
             inner = "\n".join(
-                tag._dump(indent_size, _rank=_rank + 1) for tag in self.nodes
+                tag.dump(indent_size, _rank=_rank + 1) for tag in self.nodes
             )
-            return f"{indent * _rank}<{name}{attributes}>\n{inner}\n{indent * _rank}</{name}>"
+            return f"{indent * _rank}<{self.name}{attributes}>\n{inner}\n{indent * _rank}</{self.name}>"

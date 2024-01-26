@@ -1,4 +1,4 @@
-from pyges.nodes import Html, Head, Title, String, Body, H, Span, P, Img
+from pyges.nodes import Html, Head, Title, String, Body, H, Span, P, Img, Attribute
 
 blog = Html(
     [
@@ -10,11 +10,11 @@ blog = Html(
                 P(
                     [
                         "This is a paragraph with some ",
-                        Span("Inline text", _style="color: red;"),
+                        Span("Inline text", {Attribute.STYLE: "color: red"}),
                         ".",
                     ]
                 ),
-                Img(src="flower.jpeg", _alt="test"),
+                Img(attributes={Attribute.SRC: "flower.jpeg", Attribute.ALT: "test"}),
             ]
         ),
     ]

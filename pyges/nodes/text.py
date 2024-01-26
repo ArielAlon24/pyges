@@ -1,5 +1,7 @@
 from .tag import Tag
 from .node import Value
+from .attributes import Attribute
+from typing import Dict
 
 
 class H(Tag):
@@ -7,118 +9,65 @@ class H(Tag):
         self,
         size: int,
         value: Value = None,
-        _class: str | None = None,
-        _id: str | None = None,
-        _style: str | None = None,
+        attributes: Dict[Attribute, str] | None = None,
     ) -> None:
-        super().__init__(value=value, _class=_class, _id=_id, _style=_style)
+        super().__init__(value=value, attributes=attributes)
         if size < 0 or size > 6:
             raise ValueError("H tag must have a size value between 1 - 6.")
         self.size = size
 
-    def _name(self) -> str:
-        return super()._name() + str(self.size)
-
-
-class P(Tag):
-    def __init__(
-        self,
-        value: Value = None,
-        _class: str | None = None,
-        _id: str | None = None,
-        _style: str | None = None,
-    ) -> None:
-        super().__init__(value=value, _class=_class, _id=_id, _style=_style)
-
-
-class Span(Tag):
-    def __init__(
-        self,
-        value: Value = None,
-        _class: str | None = None,
-        _id: str | None = None,
-        _style: str | None = None,
-    ) -> None:
-        super().__init__(value=value, _class=_class, _id=_id, _style=_style)
+    @property
+    def name(self) -> str:
+        return super().name + str(self.size)
 
 
 class Br(Tag):
-    def __init__(
-        self,
-        _class: str | None = None,
-        _id: str | None = None,
-        _style: str | None = None,
-    ) -> None:
-        super().__init__(_class=_class, _id=_id, _style=_style, _self_closing=True)
+    __is_void__ = True
+
+
+class P(Tag):
+    pass
+
+
+class Span(Tag):
+    pass
 
 
 class B(Tag):
-    def __init__(
-        self,
-        value: Value = None,
-        _class: str | None = None,
-        _id: str | None = None,
-        _style: str | None = None,
-        _self_closing: bool = False,
-    ) -> None:
-        super().__init__(value, _class, _id, _style, _self_closing)
+    pass
 
 
 class I(Tag):
-    def __init__(
-        self,
-        value: Value = None,
-        _class: str | None = None,
-        _id: str | None = None,
-        _style: str | None = None,
-        _self_closing: bool = False,
-    ) -> None:
-        super().__init__(value, _class, _id, _style, _self_closing)
+    pass
 
 
 class Strong(Tag):
-    def __init__(
-        self,
-        value: Value = None,
-        _class: str | None = None,
-        _id: str | None = None,
-        _style: str | None = None,
-        _self_closing: bool = False,
-    ) -> None:
-        super().__init__(value, _class, _id, _style, _self_closing)
+    pass
 
 
 class Em(Tag):
-    def __init__(
-        self,
-        value: Value = None,
-        _class: str | None = None,
-        _id: str | None = None,
-        _style: str | None = None,
-        _self_closing: bool = False,
-    ) -> None:
-        super().__init__(value, _class, _id, _style, _self_closing)
+    pass
 
 
 class Mark(Tag):
-    def __init__(
-        self,
-        value: Value = None,
-        _class: str | None = None,
-        _id: str | None = None,
-        _style: str | None = None,
-        _self_closing: bool = False,
-    ) -> None:
-        super().__init__(value, _class, _id, _style, _self_closing)
+    pass
 
 
 class Small(Tag):
-    def __init__(
-        self,
-        value: Value = None,
-        _class: str | None = None,
-        _id: str | None = None,
-        _style: str | None = None,
-        _self_closing: bool = False,
-    ) -> None:
-        super().__init__(value, _class, _id, _style, _self_closing)
+    pass
+
+
+class Del(Tag):
+    pass
+
+
+class Ins(Tag):
+    pass
+
+
+class Sub(Tag):
+    pass
+
+
+class Sup(Tag):
+    pass
