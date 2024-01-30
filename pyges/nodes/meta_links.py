@@ -2,7 +2,7 @@ from .tag import Tag
 
 
 class Link(Tag):
-    __self_closing = True
+    __is_void__ = True
 
 
 class Nav(Tag):
