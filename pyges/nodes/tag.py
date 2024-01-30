@@ -1,8 +1,8 @@
-from typing import List, Dict, Union
+from typing import List
 
 from .node import Node, Value
 from .string import String
-from .attributes import Attribute
+from .attributes import Attributes
 
 
 class Tag(Node):
@@ -11,8 +11,8 @@ class Tag(Node):
 
     def __init__(
         self,
-        value: Node | List[Union[Node, str]] | str | None = None,
-        attributes: Dict[Attribute, str] | None = None,
+        value: Value | None = None,
+        attributes: Attributes | None = None,
     ) -> None:
         self.nodes: List[Node] = []
         if not value:

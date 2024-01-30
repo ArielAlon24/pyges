@@ -71,8 +71,8 @@ All currently implemented nodes.
 ## Links and Meta Tags
 
 - [ ] a
-- [ ] link
-- [ ] nav
+- [x] link
+- [x] nav
 - [ ] meta
 - [ ] base
 - [ ] style

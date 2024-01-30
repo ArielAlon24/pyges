@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Dict
 
 
 class Attribute(Enum):
@@ -8,3 +9,10 @@ class Attribute(Enum):
 
     SRC = "src"
     ALT = "alt"
+
+    REL = "rel"
+    HREF = "href"
+    TYPE = "type"
+
+
+Attributes = Dict[Attribute, str]
