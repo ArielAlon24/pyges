@@ -4,23 +4,17 @@ import markdown as md  # Avoiding confusion with this module name.
 from markdown.extensions.codehilite import CodeHiliteExtension
 from markdown.extensions.fenced_code import FencedCodeExtension
 from typeguard import check_type, TypeCheckError
-from typing import Type, Dict, Any, TypeVar
+from typing import Type, Dict, Any
 import yaml
 import os
-
-
-class Scheme:
-    pass
-
-
-SchemeT = TypeVar("SchemeT", bound=Scheme)
+from .scheme import Scheme, SchemeT
 
 
 class Markdown:
     CODE_CLASS = "code"
     YAML_SEPERATOR = "---"
 
-    def __init__(self, content: str, scheme: Type[SchemeT] | None = None) -> None:
+    def __init__(self, content: str, scheme: Type[SchemeT] = Scheme) -> None:
         parts = content.split(Markdown.YAML_SEPERATOR)
         self.properties = {}
         if len(parts) == 1:
@@ -60,7 +54,7 @@ class Markdown:
         return cls(content=content, scheme=scheme)
 
     @staticmethod
-    def _validate(properties: Dict[str, Any], scheme: Type[Scheme]) -> None:
+    def _validate(properties: Dict[str, Any], scheme: Type[SchemeT]) -> None:
         if not hasattr(scheme, "__annotations__"):
             raise AttributeError("scheme must have an '__annotations__' attribute.")
         annotations = scheme.__annotations__
