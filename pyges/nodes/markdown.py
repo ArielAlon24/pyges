@@ -6,11 +6,21 @@ from markdown.extensions.fenced_code import FencedCodeExtension
 from typeguard import check_type, TypeCheckError
 from typing import Type, Dict, Any
 import yaml
-import os
-from .scheme import Scheme, SchemeT
+
+from .string import String
+from pathlib import Path
+
+from typing import TypeVar
 
 
-class Markdown:
+class Scheme:
+    pass
+
+
+SchemeT = TypeVar("SchemeT", bound=Scheme)
+
+
+class Markdown(String):
     CODE_CLASS = "code"
     YAML_SEPERATOR = "---"
 
@@ -31,6 +41,9 @@ class Markdown:
             raise ValueError("Inccorect use of yaml seperators.")
         self.__html: str | None = None
 
+    def dump(self, indent_size: int = 4, _rank: int = 0) -> str:
+        return f"{_rank * indent_size * ' '}{self.html}"
+
     @property
     def html(self) -> str:
         if self.__html is None:
@@ -46,10 +59,8 @@ class Markdown:
         return self.__html
 
     @classmethod
-    def load(cls, path: str, scheme: Type[SchemeT]) -> Markdown:
-        if not os.path.exists(path):
-            raise FileNotFoundError(f"Couldn't find '{path}'.")
-        with open(path) as file:
+    def load(cls, path: Path, scheme: Type[SchemeT]) -> Markdown:
+        with path.open() as file:
             content = file.read()
         return cls(content=content, scheme=scheme)
 

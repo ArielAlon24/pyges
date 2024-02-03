@@ -16,5 +16,8 @@ class Node(ABC):
     def __str__(self) -> str:
         return self.dump()
 
+    def __bytes__(self) -> bytes:
+        return self.__str__().encode()
+
 
 Value = Node | List[Union[Node, str]] | str | None

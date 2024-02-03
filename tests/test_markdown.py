@@ -1,4 +1,4 @@
-from pyges import Markdown, Scheme
+from pyges.nodes import Markdown, Scheme
 import datetime
 import pytest
 
