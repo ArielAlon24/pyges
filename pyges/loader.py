@@ -1,5 +1,5 @@
 from .models import Config, Page, Asset
-from .nodes.markdown import SchemeT
+from .nodes.markdown import Scheme
 from typing import List, Type
 from ._types import Creator
 from pathlib import Path
@@ -22,7 +22,18 @@ class Loader:
             out=self.config.out / self.config.style_sheet.relative_to(self.config.src),
         )
 
-    def load(self, path: str, creator: Creator, scheme: Type[SchemeT]) -> List[Page]:
+    def load_assets(self) -> List[Asset]:
+        return self._load_folder(self.config.assets)
+
+    def _load_folder(self, folder: Path) -> List[Asset]:
+        assets = []
+        for item in folder.rglob("*"):
+            if item.is_file():
+                out_path = self.config.out / item.relative_to(self.config.src)
+                assets.append(Asset(src=item, out=out_path))
+        return assets
+
+    def load(self, path: str, creator: Creator, scheme: Type[Scheme]) -> List[Page]:
         path_from_root = Path(path)
         full_path = self.config.src / path_from_root
 
@@ -55,7 +66,7 @@ class Loader:
 
         return pages
 
-    def _create_page(self, path: Path, creator: Creator, scheme: Type[SchemeT]) -> Page:
+    def _create_page(self, path: Path, creator: Creator, scheme: Type[Scheme]) -> Page:
         return Page(
             src=self.config.src / path,
             out=self.config.out / path.with_suffix(Suffix.HTML.value),

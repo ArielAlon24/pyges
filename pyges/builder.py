@@ -27,6 +27,7 @@ class Builder:
         return pages
 
     def build(self) -> None:
+        self.config.out.mkdir(exist_ok=True)
         self._clear_out()
 
         for resource in self.resources:

@@ -1,6 +1,6 @@
 from typing import Callable, Type, List
 from .nodes import Html
-from .nodes.markdown import Scheme, SchemeT
+from .nodes.markdown import Scheme
 from ._types import Creator
 from .models import Config, Page
 from .builder import Builder
@@ -15,7 +15,7 @@ class Site:
 
     def _setup(self) -> None:
         self.builder.append(self.loader.load_style_sheet())
-        # self.builder.add(self.loader.load_assets())
+        self.builder.add(self.loader.load_assets())
 
     def build(self) -> None:
         self.builder.build()
@@ -23,7 +23,7 @@ class Site:
     def pages(self, creator: Creator) -> List[Page]:
         return self.builder.pages(creator)
 
-    def add(self, path: str, scheme: Type[SchemeT] = Scheme) -> Callable[..., Creator]:
+    def add(self, path: str, scheme: Type[Scheme] = Scheme) -> Callable[..., Creator]:
         def decorator(creator: Creator) -> Creator:
             def wrapper(*args, **kwargs) -> Html:
                 return creator(*args, **kwargs)

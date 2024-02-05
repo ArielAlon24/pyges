@@ -1,4 +1,4 @@
-from ..nodes.markdown import Markdown, SchemeT
+from ..nodes.markdown import Markdown, Scheme
 from .._types import Creator
 from typing import Type
 from pathlib import Path
@@ -18,18 +18,19 @@ class Resource(ABC):
 
 
 class Page(Resource):
-    __slots__ = ("creator", "scheme")
+    __slots__ = ("creator", "content", "properties")
 
     def __init__(
-        self, src: Path, out: Path, creator: Creator, scheme: Type[SchemeT]
+        self, src: Path, out: Path, creator: Creator, scheme: Type[Scheme]
     ) -> None:
         super().__init__(src=src, out=out)
         self.creator = creator
-        self.scheme = scheme
+        properties, md = Markdown.load(path=self.src, scheme=scheme)
+        self.content = md
+        self.properties = properties
 
     def generate(self) -> bytes:
-        md = Markdown.load(path=self.src, scheme=self.scheme)
-        return bytes(self.creator(md, **md.properties))
+        return bytes(self.creator(self.content, **self.properties))
 
 
 class Asset(Resource):
