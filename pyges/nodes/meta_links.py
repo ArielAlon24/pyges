@@ -6,7 +6,7 @@ class Link(Tag):
 
 
 class Meta(Tag):
-    pass
+    __is_void__ = True
 
 
 class Nav(Tag):
