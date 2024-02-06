@@ -14,5 +14,8 @@ class Attribute(Enum):
     HREF = "href"
     TYPE = "type"
 
+    NAME = "name"
+    CONTENT = "content"
+
 
 Attributes = Dict[Attribute, str]

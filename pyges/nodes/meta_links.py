@@ -5,6 +5,10 @@ class Link(Tag):
     __is_void__ = True
 
 
+class Meta(Tag):
+    pass
+
+
 class Nav(Tag):
     pass
 
