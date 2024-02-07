@@ -16,6 +16,7 @@ class Site:
     def _setup(self) -> None:
         self.builder.append(self.loader.load_style_sheet())
         self.builder.add(self.loader.load_assets())
+        self.builder.append(self.loader.load_cname())
 
     def build(self) -> None:
         self.builder.build()

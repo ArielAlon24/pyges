@@ -25,6 +25,12 @@ class Loader:
     def load_assets(self) -> List[Asset]:
         return self._load_folder(self.config.assets)
 
+    def load_cname(self) -> Asset:
+        return Asset(
+            src=self.config.cname,
+            out=self.config.out / self.config.cname.relative_to(self.config.src),
+        )
+
     def _load_folder(self, folder: Path) -> List[Asset]:
         assets = []
         for item in folder.rglob("*"):
