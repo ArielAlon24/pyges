@@ -31,9 +31,10 @@ class Builder:
         self._clear_out()
 
         for resource in self.resources:
+            path = self.config.out / resource.path
             data = resource.generate()
-            resource.out.parent.mkdir(parents=True, exist_ok=True)
-            with resource.out.open("wb") as file:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open("wb") as file:
                 file.write(data)
 
     def _clear_out(self) -> None:
