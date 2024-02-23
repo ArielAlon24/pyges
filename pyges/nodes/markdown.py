@@ -50,7 +50,7 @@ class Markdown(Node):
         parts = content.split(Markdown.YAML_SEPARATOR)
         if len(parts) == 1:
             return {}, cls(content=content)
-        elif len(parts) == 3:
+        elif len(parts) >= 3:
             _, yaml_content, markdown_content = parts
             properties = yaml.safe_load(yaml_content)
             instance = cls(content=markdown_content)

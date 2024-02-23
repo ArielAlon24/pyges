@@ -25,12 +25,12 @@ All currently implemented nodes.
 
 ## Lists
 
-- [ ] ul
-- [ ] ol
-- [ ] li
-- [ ] dl
-- [ ] dt
-- [ ] dd
+- [x] ul
+- [x] ol
+- [x] li
+- [x] dl
+- [x] dt
+- [x] dd
 
 ## Table Tags
 
@@ -70,10 +70,10 @@ All currently implemented nodes.
 
 ## Links and Meta Tags
 
-- [ ] a
+- [x] a
 - [x] link
 - [x] nav
-- [ ] meta
+- [x] meta
 - [ ] base
 - [ ] style
 
@@ -87,12 +87,12 @@ All currently implemented nodes.
 ## Sectioning Tags
 
 - [x] div
-- [ ] section
-- [ ] article
-- [ ] aside
-- [ ] header
-- [ ] footer
-- [ ] main
+- [x] section
+- [x] article
+- [x] aside
+- [x] header
+- [x] footer
+- [x] main
 
 ## Interactive Element Tags
 

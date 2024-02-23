@@ -6,11 +6,11 @@ from abc import ABC, abstractmethod
 
 
 class Resource(ABC):
-    __slots__ = ("src", "out")
+    __slots__ = ("src", "path")
 
-    def __init__(self, src: Path, out: Path) -> None:
+    def __init__(self, src: Path, path: Path) -> None:
         self.src = src
-        self.out = out
+        self.path = path
 
     @abstractmethod
     def generate(self) -> bytes:
@@ -21,9 +21,9 @@ class Page(Resource):
     __slots__ = ("creator", "content", "properties")
 
     def __init__(
-        self, src: Path, out: Path, creator: Creator, scheme: Type[Scheme]
+        self, src: Path, path: Path, creator: Creator, scheme: Type[Scheme]
     ) -> None:
-        super().__init__(src=src, out=out)
+        super().__init__(src=src, path=path)
         self.creator = creator
         properties, md = Markdown.load(path=self.src, scheme=scheme)
         self.content = md

@@ -1,2 +1,2 @@
 from .config import Config
-from .page import Page, Resource, Asset
+from .resource import Page, Resource, Asset

@@ -19,7 +19,7 @@ class Loader:
     def load_style_sheet(self) -> Asset:
         return Asset(
             src=self.config.style_sheet,
-            out=self.config.out / self.config.style_sheet.relative_to(self.config.src),
+            path=self.config.style_sheet.relative_to(self.config.src),
         )
 
     def load_assets(self) -> List[Asset]:
@@ -28,15 +28,15 @@ class Loader:
     def load_cname(self) -> Asset:
         return Asset(
             src=self.config.cname,
-            out=self.config.out / self.config.cname.relative_to(self.config.src),
+            path=self.config.cname.relative_to(self.config.src),
         )
 
     def _load_folder(self, folder: Path) -> List[Asset]:
         assets = []
         for item in folder.rglob("*"):
             if item.is_file():
-                out_path = self.config.out / item.relative_to(self.config.src)
-                assets.append(Asset(src=item, out=out_path))
+                path = item.relative_to(self.config.src)
+                assets.append(Asset(src=item, path=path))
         return assets
 
     def load(self, path: str, creator: Creator, scheme: Type[Scheme]) -> List[Page]:
@@ -75,7 +75,7 @@ class Loader:
     def _create_page(self, path: Path, creator: Creator, scheme: Type[Scheme]) -> Page:
         return Page(
             src=self.config.src / path,
-            out=self.config.out / path.with_suffix(Suffix.HTML.value),
+            path=path.with_suffix(Suffix.HTML.value),
             creator=creator,
             scheme=scheme,
         )
