@@ -1,7 +1,10 @@
-from .models import Config, Resource, Page
+from ..models import Config, Resource, Page
 from typing import List, Collection
 import shutil
-from ._types import Creator
+from .._types import Creator
+from .logger import Logger
+
+logger = Logger("Builder")
 
 
 class Builder:
@@ -27,10 +30,13 @@ class Builder:
         return pages
 
     def build(self) -> None:
+        logger.headline("Building Website")
         self.config.out.mkdir(exist_ok=True)
         self._clear_out()
+        logger.debug("Cleared 'out' folder")
 
         for resource in self.resources:
+            logger.debug(f"Building {resource}")
             path = self.config.out / resource.path
             data = resource.generate()
             path.parent.mkdir(parents=True, exist_ok=True)

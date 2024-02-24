@@ -1,4 +1,4 @@
-from pyges.nodes import (
+from ...pyges.nodes import (
     String,
     H,
     P,

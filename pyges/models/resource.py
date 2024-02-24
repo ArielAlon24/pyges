@@ -16,6 +16,10 @@ class Resource(ABC):
     def generate(self) -> bytes:
         raise NotImplementedError
 
+    @abstractmethod
+    def __repr__(self) -> str:
+        raise NotImplementedError
+
 
 class Page(Resource):
     __slots__ = ("creator", "content", "properties")
@@ -32,7 +36,13 @@ class Page(Resource):
     def generate(self) -> bytes:
         return bytes(self.creator(self.content, **self.properties))
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(path={self.path}, creator={self.creator.__name__})"
+
 
 class Asset(Resource):
     def generate(self) -> bytes:
         return self.src.read_bytes()
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(path={self.path})"

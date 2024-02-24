@@ -1,14 +1,23 @@
 from typing import Callable, Type, List
-from .nodes import Html
-from .nodes.markdown import Scheme
+import sys
+import time
+
+from .errors import BuildError, LoadError, ConfigError
+from .nodes import Html, Scheme
 from ._types import Creator
 from .models import Config, Page
-from .builder import Builder
-from .loader import Loader
+from .handlers import Loader, Builder, Logger, validate_config
+
+logger = Logger("Site")
 
 
 class Site:
     def __init__(self, config: Config) -> None:
+        try:
+            validate_config(config)
+        except ConfigError:
+            sys.exit(1)
+
         self.loader = Loader(config=config)
         self.builder = Builder(config=config)
         self._setup()
@@ -19,7 +28,17 @@ class Site:
         self.builder.append(self.loader.load_cname())
 
     def build(self) -> None:
-        self.builder.build()
+        start = time.perf_counter()
+        try:
+            self.builder.build()
+        except BuildError:
+            sys.exit(1)
+
+        end = time.perf_counter()
+        logger.headline(f"Build Completed. Took {end - start:.3f} secs")
+
+    def debug(self) -> None:
+        pass
 
     def pages(self, creator: Creator) -> List[Page]:
         return self.builder.pages(creator)
@@ -29,7 +48,10 @@ class Site:
             def wrapper(*args, **kwargs) -> Html:
                 return creator(*args, **kwargs)
 
-            pages = self.loader.load(path=path, creator=creator, scheme=scheme)
+            try:
+                pages = self.loader.load(path=path, creator=creator, scheme=scheme)
+            except LoadError:
+                sys.exit(1)
             self.builder.add(pages)
             wrapper.__name__ = creator.__name__
             return wrapper
