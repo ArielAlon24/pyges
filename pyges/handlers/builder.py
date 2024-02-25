@@ -4,7 +4,7 @@ import shutil
 from .._types import Creator
 from .logger import Logger
 
-logger = Logger("Builder")
+logger = Logger(__name__)
 
 
 class Builder:

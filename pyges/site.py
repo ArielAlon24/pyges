@@ -6,9 +6,9 @@ from .errors import BuildError, LoadError, ConfigError
 from .nodes import Html, Scheme
 from ._types import Creator
 from .models import Config, Page
-from .handlers import Loader, Builder, Logger, validate_config
+from .handlers import Loader, Builder, Logger, validate_config, Runtime
 
-logger = Logger("Site")
+logger = Logger(__name__)
 
 
 class Site:
@@ -20,6 +20,7 @@ class Site:
 
         self.loader = Loader(config=config)
         self.builder = Builder(config=config)
+        self.config = config
         self._setup()
 
     def _setup(self) -> None:
@@ -35,10 +36,16 @@ class Site:
             sys.exit(1)
 
         end = time.perf_counter()
-        logger.headline(f"Build Completed. Took {end - start:.3f} secs")
+        logger.headline(
+            f"Build Completed. Took {end - start:.3f} secs", theme=Logger.CYAN_HEADLINE
+        )
 
     def debug(self) -> None:
-        pass
+        runtime = Runtime(builder=self.builder, config=self.config)
+        try:
+            runtime.run()
+        except RuntimeError:
+            sys.exit(1)
 
     def pages(self, creator: Creator) -> List[Page]:
         return self.builder.pages(creator)

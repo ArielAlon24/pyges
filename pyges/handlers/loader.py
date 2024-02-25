@@ -8,7 +8,7 @@ from ..errors import LoadError
 from enum import Enum
 
 
-logger = Logger("Loader")
+logger = Logger(__name__)
 
 
 class Suffix(Enum):
@@ -19,7 +19,7 @@ class Suffix(Enum):
 class Loader:
     def __init__(self, config: Config) -> None:
         self.config = config
-        logger.headline("Loading Pages")
+        logger.headline("Loading Resources")
 
     def load_style_sheet(self) -> Asset:
         logger.debug("Loading style sheet file")
@@ -35,7 +35,7 @@ class Loader:
 
     def load_cname(self) -> Asset:
         logger.debug("Loading 'CNAME' file")
-        return self._create_asset(self.config.style_sheet)
+        return self._create_asset(self.config.cname)
 
     def load(self, path: str, creator: Creator, scheme: Type[Scheme]) -> List[Page]:
         path_from_root = Path(path)

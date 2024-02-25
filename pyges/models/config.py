@@ -15,6 +15,7 @@ class Config:
         assets: str | None = None,
         cname: str | None = None,
         skip_non_markdown_files: bool = False,
+        debug_port: int = 5000,
     ) -> None:
         self.src = Path(src).resolve()
         self.out = Path(out if out else self.DEFAULT_OUT).resolve()
@@ -24,3 +25,4 @@ class Config:
         self.assets = self.src / Path(assets if assets else self.DEFAULT_ASSETS)
         self.cname = self.src / Path(cname if cname else self.DEFAULT_CNAME)
         self.skip_non_markdown_files = skip_non_markdown_files
+        self.debug_port = debug_port

@@ -10,25 +10,29 @@ init(autoreset=True)
 class Level(Enum):
     DEBUG = Fore.LIGHTBLUE_EX
     INFO = Fore.LIGHTCYAN_EX
-    WARNING = Fore.YELLOW
-    ERROR = Fore.RED
+    WARNING = Fore.LIGHTYELLOW_EX
+    ERROR = Fore.LIGHTRED_EX
 
 
 class Logger:
     FORMAT = (
         "{color}"
-        + "{timestamp} {level: <10}"
+        + "| {timestamp} {level: <10}"
         + Style.BRIGHT
-        + "{name: <8}  "
+        + "{name: ^16}  "
         + Style.NORMAL
         + "{message}"
     )
-
     TIMESTAMP_FORMAT = "%H:%M:%S"
-    HEADLINE_COLOR = Back.LIGHTBLUE_EX + Fore.BLACK + Style.BRIGHT
+    BLUE_HEADLINE = Back.LIGHTBLUE_EX + Fore.BLACK + Style.BRIGHT
+    CYAN_HEADLINE = Back.LIGHTCYAN_EX + Fore.BLACK + Style.BRIGHT
 
     def __init__(self, name: str) -> None:
-        self.name = name
+        self.name = self._format_name(name)
+
+    @staticmethod
+    def _format_name(name: str) -> str:
+        return name.split(".")[-1].title().replace("_", "")
 
     def log(self, level: Level, message: str) -> None:
         timestamp = datetime.now().strftime(self.TIMESTAMP_FORMAT)
@@ -58,7 +62,7 @@ class Logger:
         self.log(level=Level.ERROR, message=message)
         raise factory(message)
 
-    def headline(self, message: str) -> None:
+    def headline(self, message: str, theme: str = BLUE_HEADLINE) -> None:
         width = shutil.get_terminal_size().columns
         padding = " " * ((width - len(message)) // 2)
-        print(f"\n{self.HEADLINE_COLOR}{padding}{message}{padding}")
+        print(f"\n{theme}{padding}{message}{padding}")
