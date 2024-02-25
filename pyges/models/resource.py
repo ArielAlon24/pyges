@@ -22,7 +22,7 @@ class Resource(ABC):
 
 
 class Page(Resource):
-    __slots__ = ("creator", "scheme")
+    __slots__ = ("creator", "scheme", "properties", "content")
 
     def __init__(
         self, src: Path, path: Path, creator: Creator, scheme: Type[Scheme]
@@ -30,10 +30,13 @@ class Page(Resource):
         super().__init__(src=src, path=path)
         self.creator = creator
         self.scheme = scheme
+        properties, content = Markdown.load(path=self.src, scheme=self.scheme)
+        self.properties = properties
+        self.content = content
 
     def generate(self) -> bytes:
-        properties, md = Markdown.load(path=self.src, scheme=self.scheme)
-        return bytes(self.creator(md, **properties))
+        self.properties, self.content = Markdown.load(path=self.src, scheme=self.scheme)
+        return bytes(self.creator(self.content, **self.properties))
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(path={self.path}, creator={self.creator.__name__})"
