@@ -2,26 +2,12 @@ from typing import Callable
 from .builder import Builder
 from .logger import Logger
 from ..models import Config, Resource
+from ..enums import FileType
 from flask import Flask, request, Response
 from pathlib import Path
 from enum import Enum
 
 logger = Logger("Runtime")
-
-
-class FileType(Enum):
-    HTML = "text/html"
-    TXT = "text/plain"
-    CSS = "text/css"
-    JS = "application/javascript"
-    JSON = "application/json"
-    XML = "application/xml"
-    JPG = "image/jpeg"
-    JPEG = "image/jpeg"
-    PNG = "image/png"
-    GIF = "image/gif"
-    SVG = "image/svg+xml"
-    PDF = "application/pdf"
 
 
 class Runtime:
