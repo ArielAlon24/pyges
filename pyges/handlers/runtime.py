@@ -45,16 +45,18 @@ class Runtime:
     def _after_request(self, response: Response) -> Response:
         if response.status_code != 200:
             logger.warning(
-                f"[{request.method} {request.path}] -> {response.status_code}"
+                f'[ {request.method} "{request.path}" ] -> {response.status_code}'
             )
         else:
-            logger.info(f"[{request.method} {request.path}] -> {response.status_code}")
+            logger.info(
+                f'[ {request.method} "{request.path}" ] -> {response.status_code}'
+            )
         return response
 
     def _teardown_request(self, exception: Exception | None = None) -> None:
         if exception:
             logger.error(
-                f"An exception occured in [{request.method} {request.path}]: {repr(exception)}"
+                f'An exception occured in [ {request.method} "{request.path}" ]: {repr(exception)}'
             )
 
     def run(self) -> None:
