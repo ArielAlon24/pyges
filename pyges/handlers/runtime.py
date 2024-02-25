@@ -78,7 +78,7 @@ class Runtime:
 
         for index, resource in enumerate(self.builder.resources):
             path = self._create_url(resource.path)
-            logger.debug(f"({index + 1}/{total}) Routing {path}, {type(resource)}")
+            logger.debug(f"({index + 1}/{total}) Routing {path}")
             self.app.route(path)(self._create_view_function(resource))
 
         try:
