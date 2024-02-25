@@ -4,8 +4,24 @@ from .logger import Logger
 from ..models import Config, Resource
 from flask import Flask, request, Response
 from pathlib import Path
+from enum import Enum
 
 logger = Logger("Runtime")
+
+
+class FileType(Enum):
+    HTML = "text/html"
+    TXT = "text/plain"
+    CSS = "text/css"
+    JS = "application/javascript"
+    JSON = "application/json"
+    XML = "application/xml"
+    JPG = "image/jpeg"
+    JPEG = "image/jpeg"
+    PNG = "image/png"
+    GIF = "image/gif"
+    SVG = "image/svg+xml"
+    PDF = "application/pdf"
 
 
 class Runtime:
@@ -62,7 +78,7 @@ class Runtime:
 
         for index, resource in enumerate(self.builder.resources):
             path = self._create_url(resource.path)
-            logger.debug(f"({index + 1}/{total}) Routing {path}")
+            logger.debug(f"({index + 1}/{total}) Routing {path}, {type(resource)}")
             self.app.route(path)(self._create_view_function(resource))
 
         try:
@@ -80,9 +96,14 @@ class Runtime:
     @staticmethod
     def _create_view_function(resource: Resource) -> Callable[[], bytes]:
         def f():
-            return resource.generate()
+            return Response(
+                resource.generate(),
+                content_type=FileType[resource.path.suffix[1:].upper()].value,
+                status=200,
+            )
 
         f.__name__ = repr(resource.src)
+
         return f
 
     def _run(self) -> None:
