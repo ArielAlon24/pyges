@@ -40,7 +40,7 @@ class Tag(Node):
     def _format_attributes(self) -> str:
         result = ""
         for attribute, value in self.attributes.items():
-            result += f' {attribute.value}="{value}"'
+            result += f' {attribute.name.lower()}="{value}"'
 
         return result
 

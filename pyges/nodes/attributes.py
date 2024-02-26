@@ -18,4 +18,13 @@ class Attribute(Enum):
     CONTENT = "content"
 
 
-Attributes = Dict[Attribute, str]
+class DataAttribute:
+    def __init__(self, name: str) -> None:
+        self.__name = name.lower()
+
+    @property
+    def name(self) -> str:
+        return f"data-{self.__name}"
+
+
+Attributes = Dict[Attribute | DataAttribute, str]
