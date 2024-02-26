@@ -104,7 +104,7 @@ All currently implemented nodes.
 
 ## Scripting Tags
 
-- [ ] script
+- [x] script
 - [ ] noscript
 - [ ] template
 - [ ] embed
